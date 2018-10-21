@@ -22,4 +22,7 @@ func main() {
 	log.Printf("read %v stop times\n", len(stopTimes))
 	trips := readTrips(tripsFilename)
 	log.Printf("read %v trips\n", len(trips))
+
+	response := requestTime(4207)
+	log.Println("request wait time status for 4207: ", response.Status)
 }

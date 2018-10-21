@@ -1,19 +1,20 @@
 package main
 
 import (
-	"log"
+	"bytes"
+	"fmt"
 	"net/http"
 )
 
-func request(stopId int) {
+func requestTime(stopId int) *http.Response {
 	client := &http.Client{}
 
 	baseUrl := "http://m.carris.pt/pt/tempo-espera-email/"
 	queryParam := fmt.Sprintf("paragem=%v", stopId)
 	url := fmt.Sprintf("%v?%v", baseUrl, queryParam)
-	data := bytes.NewBufferString("email=joaonvfigueiredo%40gmail.com&my_request=this_is_my_submit")
+	data := bytes.NewBufferString("email=semumnomedefinido%40gmail.com&my_request=this_is_my_submit")
 
-	req := http.NewRequest("POST", url, data)
+	req, _ := http.NewRequest("POST", url, data)
 
 	// spoofing here
 	req.Header.Add("Origin", "http://m.carris.pt")
@@ -28,5 +29,6 @@ func request(stopId int) {
 	req.Header.Add("Accept-Encoding", "gzip, deflate")
 	req.Header.Add("Accept-Language", "en,en-US;q=0.9,pt;q=0.8,it;q=0.7")
 
-	_ := client.Do(req)
+	response, _ := client.Do(req)
+	return response
 }
