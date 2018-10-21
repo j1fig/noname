@@ -8,6 +8,7 @@ import (
 	"log"
 	"os"
 	"strconv"
+	"strings"
 )
 
 type Stop struct {
@@ -19,7 +20,7 @@ type Stop struct {
 	lon            float64
 	zone_id        int
 	url            string
-	location_ype   string
+	location_type   string
 	parent_station string
 }
 
@@ -28,13 +29,18 @@ var stopsFilename = flag.String("stops", "data/stops.csv", "path to bus stops CS
 func main() {
 	flag.Parse()
 
-	file, err := os.Open(*stopsFilename)
+	readStops(stopsFilename)
+}
+
+func readStops(filename *string) {
+	file, err := os.Open(*filename)
 
 	if err != nil {
 		log.Fatalln("Error opening file: ", err)
 	}
 
 	reader := csv.NewReader(file)
+	reader.Read() // throw away the header
 
 	var stops []Stop
 
@@ -51,13 +57,30 @@ func main() {
 		fmt.Println(stop)
 		stops = append(stops, stop)
 	}
+
 }
 
 func parseStop(row []string) Stop {
 	var stop Stop
-	id, _ := strconv.Atoi(row[0])
-	// pretty sure theres a conversion pro here
+	id_tokens := strings.Split(row[0], "_")
+	id, err := strconv.Atoi(id_tokens[1])
+	if err != nil {
+		log.Fatalln("Error parsing stop id: ", err, row)
+	}
 	stop.id = id
+
+	stop.name = row[2]
+	lat, err := strconv.ParseFloat(row[4], 64)
+	if err != nil {
+		log.Fatalln("Error parsing stop latitude: ", err, row)
+	}
+	lon, err := strconv.ParseFloat(row[5], 64)
+	if err != nil {
+		log.Fatalln("Error parsing stop longitude: ", err, row)
+	}
+
+	stop.lat = lat
+	stop.lon = lon
 
 	return stop
 }
