@@ -18,8 +18,8 @@ type Trip struct {
 	shape_id int
 }
 
-func readTrips(filename *string) []Trip {
-	file, err := os.Open(*filename)
+func readTrips(filename string) []Trip {
+	file, err := os.Open(filename)
 
 	if err != nil {
 		log.Fatalln("Error opening file: ", err)

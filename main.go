@@ -14,15 +14,17 @@ func main() {
 	flag.Parse()
 	log.SetPrefix("[noname] ")
 
-	stops := readStops(stopsFilename)
+	stops := readStops(*stopsFilename)
 	log.Printf("read %v stops\n", len(stops))
-	routes := readRoutes(routesFilename)
+	routes := readRoutes(*routesFilename)
 	log.Printf("read %v routes\n", len(routes))
-	stopTimes := readStopTimes(stopTimesFilename)
+	stopTimes := readStopTimes(*stopTimesFilename)
 	log.Printf("read %v stop times\n", len(stopTimes))
-	trips := readTrips(tripsFilename)
+	trips := readTrips(*tripsFilename)
 	log.Printf("read %v trips\n", len(trips))
 
 	response := requestTime(4207)
 	log.Println("request wait time status for 4207: ", response.Status)
+
+	getMessages()
 }

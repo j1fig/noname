@@ -2,3 +2,5 @@ noname
 data/
 
 *.swp
+
+env.sh

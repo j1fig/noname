@@ -22,8 +22,8 @@ type Stop struct {
 	parent_station string
 }
 
-func readStops(filename *string) []Stop {
-	file, err := os.Open(*filename)
+func readStops(filename string) []Stop {
+	file, err := os.Open(filename)
 
 	if err != nil {
 		log.Fatalln("Error opening file: ", err)

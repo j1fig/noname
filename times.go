@@ -22,8 +22,8 @@ type StopTime struct {
 	shape_dist_traveled float64
 }
 
-func readStopTimes(filename *string) []StopTime {
-	file, err := os.Open(*filename)
+func readStopTimes(filename string) []StopTime {
+	file, err := os.Open(filename)
 
 	if err != nil {
 		log.Fatalln("Error opening file: ", err)

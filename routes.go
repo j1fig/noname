@@ -21,8 +21,8 @@ type Route struct {
 	agency_id  int
 }
 
-func readRoutes(filename *string) []Route {
-	file, err := os.Open(*filename)
+func readRoutes(filename string) []Route {
+	file, err := os.Open(filename)
 
 	if err != nil {
 		log.Fatalln("Error opening file: ", err)

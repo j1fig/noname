@@ -4,15 +4,19 @@ import (
 	"bytes"
 	"fmt"
 	"net/http"
+	"net/url"
+	"os"
 )
 
 func requestTime(stopId int) *http.Response {
+	email := url.PathEscape(os.Getenv("NONAME_EMAIL"))
 	client := &http.Client{}
 
 	baseUrl := "http://m.carris.pt/pt/tempo-espera-email/"
 	queryParam := fmt.Sprintf("paragem=%v", stopId)
 	url := fmt.Sprintf("%v?%v", baseUrl, queryParam)
-	data := bytes.NewBufferString("email=semumnomedefinido%40gmail.com&my_request=this_is_my_submit")
+	submitData := fmt.Sprintf("email=%v&my_request=this_is_my_submit", email)
+	data := bytes.NewBufferString(submitData)
 
 	req, _ := http.NewRequest("POST", url, data)
 
