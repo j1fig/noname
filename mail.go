@@ -3,12 +3,12 @@ package main
 import (
 	"crypto/tls"
 	"fmt"
+	"github.com/emersion/go-imap"
+	"github.com/emersion/go-imap/client"
+	"github.com/emersion/go-message/mail"
 	"io"
 	"io/ioutil"
 	"log"
-	"github.com/emersion/go-imap/client"
-	"github.com/emersion/go-imap"
-	"github.com/emersion/go-message/mail"
 	"os"
 )
 
@@ -89,7 +89,7 @@ func getMessages() {
 		}
 
 		switch p.Header.(type) {
-		case mail.TextHeader :
+		case mail.TextHeader:
 			// This is the message's text (can be plain-text or HTML)
 			b, _ := ioutil.ReadAll(p.Body)
 			log.Printf("Got text: %v\n", string(b))
@@ -105,7 +105,7 @@ func newClient() *client.Client {
 	log.Printf("Connecting to IMAP server %v...\n", url)
 
 	// Connect to server
-	config := tls.Config{InsecureSkipVerify : true}
+	config := tls.Config{InsecureSkipVerify: true}
 	c, err := client.DialTLS(url, &config)
 	if err != nil {
 		log.Fatalln("Error connecting to IMAP server: ", err)

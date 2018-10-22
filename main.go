@@ -2,29 +2,53 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"log"
+	"net/http"
 )
 
-var stopsFilename = flag.String("stops", "data/stops.csv", "path to bus stops CSV file")
-var routesFilename = flag.String("routes", "data/routes.csv", "path to bus routes CSV file")
-var stopTimesFilename = flag.String("stop-times", "data/stop_times.csv", "path to bus stop times CSV file")
-var tripsFilename = flag.String("trips", "data/trips.csv", "path to bus trips CSV file")
+const (
+	STOPSFILE     = "data/stops.csv"
+	ROUTESFILE    = "data/routes.csv"
+	STOPTIMESFILE = "data/stop_times.csv"
+	TRIPSFILE     = "data/trips.csv"
+)
+
+var cold = flag.Bool("cold", false, "cold starts the app by reloading data files")
+var request = flag.Int("request", 0, "request wait time for a given stop ID")
+var _time = flag.Int("time", 0, "displays waiting time (min) for a given stop ID")
+var port = flag.Int("port", 5000, "HTTP web server port")
+
+func handler(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "echoing %s!", r.URL.Path[1:])
+}
 
 func main() {
 	flag.Parse()
 	log.SetPrefix("[noname] ")
 
-	stops := readStops(*stopsFilename)
-	log.Printf("read %v stops\n", len(stops))
-	routes := readRoutes(*routesFilename)
-	log.Printf("read %v routes\n", len(routes))
-	stopTimes := readStopTimes(*stopTimesFilename)
-	log.Printf("read %v stop times\n", len(stopTimes))
-	trips := readTrips(*tripsFilename)
-	log.Printf("read %v trips\n", len(trips))
+	if *request != 0 {
+		response := requestTime(*request)
+		log.Printf("request wait time status for %v: %v\n", *request, response.Status)
+		return
+	}
 
-	response := requestTime(4207)
-	log.Println("request wait time status for 4207: ", response.Status)
+	if *_time != 0 {
+		getMessages()
+		return
+	}
 
-	getMessages()
+	if *cold {
+		stops := readStops(STOPSFILE)
+		log.Printf("read %v stops\n", len(stops))
+		routes := readRoutes(ROUTESFILE)
+		log.Printf("read %v routes\n", len(routes))
+		stopTimes := readStopTimes(STOPTIMESFILE)
+		log.Printf("read %v stop times\n", len(stopTimes))
+		trips := readTrips(TRIPSFILE)
+		log.Printf("read %v trips\n", len(trips))
+	}
+
+	http.HandleFunc("/", handler)
+	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%v", *port), nil))
 }

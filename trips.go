@@ -9,13 +9,13 @@ import (
 )
 
 type Trip struct {
-	route_id int
-	service_id int
-	id int
-	headsign string
+	route_id     int
+	service_id   int
+	id           int
+	headsign     string
 	direction_id int
-	block_id int
-	shape_id int
+	block_id     int
+	shape_id     int
 }
 
 func readTrips(filename string) []Trip {
