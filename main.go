@@ -21,6 +21,8 @@ var _time = flag.Int("time", 0, "displays waiting time (min) for a given stop ID
 var port = flag.Int("port", 5000, "HTTP web server port")
 
 func handler(w http.ResponseWriter, r *http.Request) {
+	// probably inefficient to allocate a new connection pool *every time* there is a request
+	// which I think is what the library does here.
 	rc := redis.NewClient(&redis.Options{
 	    Addr:     "redis:6379",
 	    Password: "", // no password set
