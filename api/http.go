@@ -22,6 +22,8 @@ func handler(w http.ResponseWriter, r *http.Request) {
 }
 
 func ListenAndServe(port int) {
-	http.HandleFunc("/", handler)
+	fs := http.FileServer(http.Dir("static/dist"))
+	http.Handle("/", http.StripPrefix("/", fs))
+	http.HandleFunc("/healthz/", handler)
 	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%v", port), nil))
 }

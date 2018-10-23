@@ -1,7 +1,7 @@
 noname
 data/
 keys/
-web/node_modules/
+static/node_modules/
 
 *.swp
 
