@@ -1,4 +1,4 @@
-package main
+package worker
 
 import (
 	"encoding/csv"
@@ -22,7 +22,7 @@ type Stop struct {
 	parent_station string
 }
 
-func readStops(filename string) []Stop {
+func ReadStops(filename string) []Stop {
 	file, err := os.Open(filename)
 
 	if err != nil {

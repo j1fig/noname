@@ -1,4 +1,4 @@
-package main
+package worker
 
 import (
 	"encoding/csv"
@@ -18,7 +18,7 @@ type Trip struct {
 	shape_id     int
 }
 
-func readTrips(filename string) []Trip {
+func ReadTrips(filename string) []Trip {
 	file, err := os.Open(filename)
 
 	if err != nil {

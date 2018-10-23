@@ -1,4 +1,4 @@
-package main
+package worker
 
 import (
 	"crypto/tls"
@@ -16,7 +16,7 @@ type Message struct {
 	body []byte
 }
 
-func getMessages() {
+func GetMessages() {
 	email := os.Getenv("NONAME_EMAIL")
 	password := os.Getenv("NONAME_PASS")
 

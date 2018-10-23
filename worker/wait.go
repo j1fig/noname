@@ -1,4 +1,4 @@
-package main
+package worker
 
 import (
 	"bytes"
@@ -8,7 +8,7 @@ import (
 	"os"
 )
 
-func requestTime(stopId int) *http.Response {
+func RequestTime(stopId int) *http.Response {
 	email := url.PathEscape(os.Getenv("NONAME_EMAIL"))
 	client := &http.Client{}
 

@@ -1,4 +1,4 @@
-package main
+package worker
 
 import (
 	"encoding/csv"
@@ -21,7 +21,7 @@ type Route struct {
 	agency_id  int
 }
 
-func readRoutes(filename string) []Route {
+func ReadRoutes(filename string) []Route {
 	file, err := os.Open(filename)
 
 	if err != nil {

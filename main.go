@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"gitlab.com/j1fig/noname/worker"
 	"github.com/go-redis/redis"
 	"log"
 	"net/http"
@@ -39,24 +40,24 @@ func main() {
 	log.SetPrefix("[noname] ")
 
 	if *request != 0 {
-		response := requestTime(*request)
+		response := worker.RequestTime(*request)
 		log.Printf("request wait time status for %v: %v\n", *request, response.Status)
 		return
 	}
 
 	if *_time != 0 {
-		getMessages()
+		worker.GetMessages()
 		return
 	}
 
 	if *cold {
-		stops := readStops(STOPSFILE)
+		stops := worker.ReadStops(STOPSFILE)
 		log.Printf("read %v stops\n", len(stops))
-		routes := readRoutes(ROUTESFILE)
+		routes := worker.ReadRoutes(ROUTESFILE)
 		log.Printf("read %v routes\n", len(routes))
-		stopTimes := readStopTimes(STOPTIMESFILE)
+		stopTimes := worker.ReadStopTimes(STOPTIMESFILE)
 		log.Printf("read %v stop times\n", len(stopTimes))
-		trips := readTrips(TRIPSFILE)
+		trips := worker.ReadTrips(TRIPSFILE)
 		log.Printf("read %v trips\n", len(trips))
 	}
 

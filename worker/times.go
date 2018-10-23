@@ -1,4 +1,4 @@
-package main
+package worker
 
 import (
 	"encoding/csv"
@@ -22,7 +22,7 @@ type StopTime struct {
 	shape_dist_traveled float64
 }
 
-func readStopTimes(filename string) []StopTime {
+func ReadStopTimes(filename string) []StopTime {
 	file, err := os.Open(filename)
 
 	if err != nil {
