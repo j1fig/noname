@@ -6,3 +6,5 @@ services:
      - "5000:5000"
   redis:
     image: "redis:alpine"
+    ports:
+     - "6479:6379" # DEV mode only, lets not expose in production
