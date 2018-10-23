@@ -2,11 +2,9 @@ package main
 
 import (
 	"flag"
-	"fmt"
 	"gitlab.com/j1fig/noname/worker"
-	"github.com/go-redis/redis"
+	"gitlab.com/j1fig/noname/api"
 	"log"
-	"net/http"
 )
 
 const (
@@ -21,19 +19,6 @@ var request = flag.Int("request", 0, "request wait time for a given stop ID")
 var _time = flag.Int("time", 0, "displays waiting time (min) for a given stop ID")
 var port = flag.Int("port", 5000, "HTTP web server port")
 
-func handler(w http.ResponseWriter, r *http.Request) {
-	// probably inefficient to allocate a new connection pool *every time* there is a request
-	// which I think is what the library does here.
-	rc := redis.NewClient(&redis.Options{
-	    Addr:     "redis:6379",
-	    Password: "", // no password set
-	    DB:       0,  // use default DB
-	})
-
-	pong, err := rc.Ping().Result()
-	fmt.Println(pong, err)
-	fmt.Fprintf(w, "echoing %s! redis: %v %v", r.URL.Path[1:], pong, err)
-}
 
 func main() {
 	flag.Parse()
@@ -61,6 +46,5 @@ func main() {
 		log.Printf("read %v trips\n", len(trips))
 	}
 
-	http.HandleFunc("/", handler)
-	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%v", *port), nil))
+	api.ListenAndServe(*port)
 }
